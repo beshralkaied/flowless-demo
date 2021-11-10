@@ -1,21 +1,34 @@
-export let pages = [
-  {
-    dashboard: {
-      title: "Dashboard",
-      name: "Dashbourd",
-    },
-    
-    alerts: {
-      title: "Alerts",
-      name: "Alerts",
-    },
+const pagesObj =
+{
+  dashboard: {
+    title: "Dashboard",
+    name: "Dashboard",
+  },
+  
+  
+  alerts: {
+    title: "Alerts",
+    name: "Alerts",
+    subPages: [
+      {
+        title: "Alerts2",
+        name: "Alerts"
+      },
+      
+      {
+        title: "Dashboard2",
+        name: "Dashboard"
+      }
+    ]
+  },
+  
+  loginPage: {
+    title: "LoginPage",
+    name: "LoginPage",
+  },
 
-    flowReadingsHistory: {
-      title: 'FlowReadingsHistory',
-      name: 'FlowReadingsHistory'
-    }
-  }
+}
+
+export const pages = Object.values(pagesObj)
 
 
-
-];

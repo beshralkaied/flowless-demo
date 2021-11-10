@@ -1,56 +1,120 @@
 <template>
-  <transition name="right">
-    <nav class="bg-gray-600 text-white p-5 text-center" v-if="leftArrow">
-      <div class="logo mb-6"><img :src="logo" alt="" /></div>
+  <nav
+    class="text-white pt-5 text-center px-2"
+    :class="{ 'max-w-min': !expanded, 'w-60 ': expanded }"
+  >
+    <div class="mb-6 px-3"><img :src="logo" alt="" class="logo" /></div>
 
-      <div v-for="item in items" :key="item">
-        <div class="header">
-          <hr />
-          <router-link class="mr-3 p-6" to="/dashboard">{{
-            item.dashboard.title
-          }}</router-link>
-          <hr />
-          <router-link class="mr-3 p-6" to="/alerts">{{
-            item.alerts.title
-          }}</router-link>
-
-          <router-link class="mr-3 p-6" to="/flowReadingsHistory">{{
-            item.flowReadingsHistory.title
-          }}</router-link>
-          <hr />
-        </div>
-      </div>
-      <button id="1" class="show p-1 pr-2 bg-arrow mt-5" @click="hideMenu()">
-        <svg class="arrow" id="icon-arrow-left" viewBox="0 0 24 24">
-          <title>icon-arrow-left</title>
-          <polyline points="16.24 20.48 7.76 12 16.24 3.52" />
-        </svg>
-      </button>
-    </nav>
-  </transition>
-
-  <nav class="bg-gray-600 text-white py-5 px-3 text-center" v-if="rightArrow">
-    <div class="logo mb-6"><img :src="logo" alt="" /></div>
     <div v-for="item in items" :key="item">
       <div class="header">
         <hr />
-        <router-link class="pt-10 pb-4" to="/dashboard">{{
-          item.dashboard.title
-        }}</router-link>
-        <hr />
-        <router-link class="py-4 pl-3" to="/alerts">{{
-          item.alerts.title
-        }}</router-link>
-        <hr />
+        <router-link
+          class="px-3 py-3"
+          :to="{ name: item.name }"
+          v-if="!item.subPages"
+          >{{ item.title }}</router-link
+        >
+        <button class="w-full py-5" v-if="item.subPages" @click="toggleSubMenu">
+          <div class="flex justify-between">
+            <div>
+              {{ item.title }}
+            </div>
+            <div v-if="expanded">
+              <svg
+                width="5px"
+                viewBox="0 0 50 80"
+                xml:space="preserve"
+                v-if="expandedSub"
+              >
+                <polyline
+                  fill="none"
+                  stroke="white"
+                  stroke-width="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="
+	                45.63,75.8 0.375,38.087 45.63,0.375 "
+                />
+              </svg>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="5px"
+                viewBox="0 0 50 80"
+                xml:space="preserve"
+                v-else
+              >
+                <polyline
+                  fill="none"
+                  stroke="white"
+                  stroke-width="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="
+	                0.375,0.375 45.63,38.087 0.375,75.8 "
+                />
+              </svg>
+            </div>
+          </div>
+        </button>
+        <div class="w-full text-left bg-white text-blue-400 rounded shadow-md">
+          <div
+            v-for="subPage in item.subPages"
+            :key="subPage"
+            :class="{ 'py-2 px-3': expandedSub }"
+          >
+            <router-link
+              :to="{ name: subPage.name }"
+              v-if="expandedSub"
+              class="w-full"
+              >{{ subPage.title }}</router-link
+            >
+          </div>
+        </div>
       </div>
     </div>
+    <button id="1" class="p-1 pr-2 mt-5" @click="toggleMenu">
+      <svg v-if="expanded" width="7px" viewBox="0 0 50 80" xml:space="preserve">
+        <polyline
+          fill="none"
+          stroke="white"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="
+	45.63,75.8 0.375,38.087 45.63,0.375 "
+        />
+      </svg>
 
-    <button id="2" class="show p-1 pl-2 bg-arrow mt-5" @click="showMenu()">
-      <svg class="arrow" id="icon-arrow-right" viewBox="0 0 24 24">
-        <title>icon-arrow-right</title>
-        <polyline points="7.76 3.52 16.24 12 7.76 20.48" />
+      <svg
+        v-else
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="7px"
+        viewBox="0 0 50 80"
+        xml:space="preserve"
+      >
+        <polyline
+          fill="none"
+          stroke="white"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="
+	0.375,0.375 45.63,38.087 0.375,75.8 "
+        />
       </svg>
     </button>
+    <div>
+      <button
+        @click="logOut"
+        :disabled="!log"
+        :class="{ 'line-through': !log }"
+      >
+        LogOut
+      </button>
+    </div>
   </nav>
 </template>
 
@@ -58,35 +122,41 @@
 import { computed, defineComponent, ref } from "vue";
 import { pages } from "../services/HeaderStoreService";
 import logo from "../assets/flowless-logo.png";
+import LoginService from "../services/LoginService";
 export default defineComponent({
+  components: {},
   setup() {
+    let loginService = LoginService();
     let items = computed(() => pages);
     let rightArrow = ref(true);
     let leftArrow = ref(false);
-
-    function hideMenu() {
-      let z: any;
-      z = document.getElementById("1");
-      z.className = "show";
-      rightArrow.value = true;
-      leftArrow.value = false;
+    let expanded = ref(false);
+    let expandedSub = ref(false);
+    let log = loginService.get();
+    function toggleMenu() {
+      expanded.value = !expanded.value;
     }
 
-    function showMenu() {
-      let x: any;
-      x = document.getElementById("2");
-      x.className = "hide";
-      rightArrow.value = false;
-      leftArrow.value = true;
+    function toggleSubMenu() {
+      expandedSub.value = !expandedSub.value;
+    }
+
+    function logOut() {
+      loginService.logOut();
+      alert("You Loged Out!");
     }
 
     return {
       items,
-      hideMenu,
+      toggleMenu,
       rightArrow,
-      showMenu,
       leftArrow,
       logo,
+      expanded,
+      toggleSubMenu,
+      expandedSub,
+      logOut,
+      log,
     };
   },
 });
@@ -98,39 +168,28 @@ hr {
   width: 100%;
 }
 
+.w {
+  width: 20px;
+}
+
 .bg-arrow {
   background-color: white;
-  opacity: 0.3;
+  opacity: 0.4;
   border-radius: 50%;
 }
 
 nav {
   font-size: 1vw;
-  max-width: fit-content;
-  position: fixed;
   top: 0;
   left: 0;
   min-height: 100vh;
+  background-image: linear-gradient(#134d68, #0d3345);
 }
 
 nav .header {
   display: flex;
-
   flex-direction: column;
   align-items: flex-start;
-}
-
-.arrow {
-  width: 30px;
-  color: white;
-}
-
-.show {
-  visibility: visible;
-}
-
-.hide {
-  visibility: hidden;
 }
 
 .logo {
