@@ -20,23 +20,7 @@
         <div class="row-span-2 col-span-2 shadow bg-white max-w-3xl">
           <div class="border"><h2>Accumulative Hourly Flowerate</h2></div>
           <div>
-            <Chart
-              :labels="labels"
-              :datasetsType="datasetsType"
-              :datasetsLable="datasetsLable"
-              :datasetsData="datasetsData"
-              :datasetsBorderColor="datasetsBorderColor"
-              :datasetsTension="datasetsTension"
-              :datasetsBackgroundColor="datasetsBackgroundColor"
-              :datasetsType2="datasetsType2"
-              :datasetsLable2="datasetsLable2"
-              :datasetsData2="datasetsData2"
-              :datasetsBorderColor2="datasetsBorderColor2"
-              :datasetsTension2="datasetsTension2"
-              :datasetsBackgroundColor2="datasetsBackgroundColor2"
-              :data="data"
-              :datasets="datasets"
-            />
+         
           </div>
         </div>
 

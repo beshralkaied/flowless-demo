@@ -22,13 +22,15 @@ const routes = [
     {
         path: '/dashboard',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: { requiresAuth: true }
     },
 
     {
         path: '/alerts',
         name: 'Alerts',
-        component: Alerts
+        component: Alerts,
+        meta: { requiresAuth: true }
     },
 
     {
@@ -40,7 +42,8 @@ const routes = [
     {
         path: '/loginPage',
         name: 'LoginPage',
-        component: LoginPage
+        component: LoginPage,
+
     },
 ]
 
@@ -51,12 +54,15 @@ const router = createRouter({
 
 let loginService = LoginService()
 
-router.beforeEach((to, from) => {
-    if (to.path === '/alerts' || to.path === '/dashboard') {
-        if (!loginService.get()) {
-            router.push('/loginPage')
-            alert("You Must Login First")
+router.beforeEach((to, from, next) => {
+    if (to.meta && to.meta.requiresAuth) {
+        if (loginService.check()) {
+            next()
+        }else{
+            next({name:'LoginPage'})
         }
+    } else {
+        next()
     }
 })
 

@@ -1,26 +1,31 @@
 
-let user = ''
-let passowrd = ''
+let isLogedin: boolean
+
 
 export default function () {
 
-    function get() {
-        return user == 'admin' && passowrd == 'admin'
+    function check() {
+        return isLogedin
     }
 
-    function set(User: string, Passowrd: string) {
-        user = User
-        passowrd = Passowrd
+    async function login(User: string, Passowrd: string) {
+
+        return new Promise((resolve, reject) => {
+            try {
+                setTimeout(() => { isLogedin = User === 'admin' && Passowrd === 'admin'; resolve(isLogedin) }, 3000)
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 
     function logOut() {
-        user = ''
-        passowrd = ''
+        isLogedin = false
     }
 
     return {
-        get,
-        set,
+        check,
+        login,
         logOut,
     }
 }

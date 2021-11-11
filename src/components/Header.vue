@@ -123,6 +123,7 @@ import { computed, defineComponent, ref } from "vue";
 import { pages } from "../services/HeaderStoreService";
 import logo from "../assets/flowless-logo.png";
 import LoginService from "../services/LoginService";
+import router from "../router";
 export default defineComponent({
   components: {},
   setup() {
@@ -132,7 +133,7 @@ export default defineComponent({
     let leftArrow = ref(false);
     let expanded = ref(false);
     let expandedSub = ref(false);
-    let log = loginService.get();
+    let log = loginService.check();
     function toggleMenu() {
       expanded.value = !expanded.value;
     }
@@ -143,7 +144,7 @@ export default defineComponent({
 
     function logOut() {
       loginService.logOut();
-      alert("You Loged Out!");
+      router.push({ name: "LoginPage" });
     }
 
     return {
