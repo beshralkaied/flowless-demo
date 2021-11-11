@@ -51,6 +51,7 @@ export default defineComponent({
     Header,
   },
   setup() {
+    let mazen = true
     let loginService = LoginService();
     let user = ref("");
     let passowrd = ref("");
