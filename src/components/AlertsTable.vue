@@ -167,7 +167,7 @@ export default defineComponent({
       }).then(function (response) {
         Data.value = response.data;
         filtiredData.value = Data.value;
-        console.log()
+        
       });
 
       inputNum();

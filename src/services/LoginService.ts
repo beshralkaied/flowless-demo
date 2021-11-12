@@ -1,4 +1,4 @@
-import { watch } from '@vue/runtime-dom'
+
 import LocalStorageService from './LocalStorageService'
 
 let localStorageService = LocalStorageService()
@@ -8,11 +8,13 @@ let isLogedin: boolean
 export default function () {
 
     function check() {
-        if (localStorageService.get('isLogedin') === 'true') {
-            return true
-        } else {
-            return isLogedin
+        if (!isLogedin) {
+              if (localStorageService.get('isLogedin') === 'true') {
+             isLogedin = true
+        } 
         }
+      
+        return isLogedin
     }
 
     async function login(User: string, Passowrd: string) {
