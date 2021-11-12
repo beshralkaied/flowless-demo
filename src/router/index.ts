@@ -55,11 +55,13 @@ const router = createRouter({
 let loginService = LoginService()
 
 router.beforeEach((to, from, next) => {
-    if (to.meta && to.meta.requiresAuth) {
+    if (to.name === 'LoginPage' && loginService.check()) {
+        next({ name: 'Dashboard' })
+    } else if (to.meta && to.meta.requiresAuth) {
         if (loginService.check()) {
             next()
-        }else{
-            next({name:'LoginPage'})
+        } else {
+            next({ name: 'LoginPage' })
         }
     } else {
         next()
