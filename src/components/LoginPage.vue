@@ -51,6 +51,7 @@ export default defineComponent({
     Header,
   },
   setup() {
+    let mazen = true
     let loginService = LoginService();
     let user = ref("");
     let passowrd = ref("");
@@ -58,6 +59,7 @@ export default defineComponent({
     async function submit() {
       louding.value = true;
       await loginService.login(user.value, passowrd.value);
+      
       if (loginService.check()) {
         try {
           router.go(-1)
