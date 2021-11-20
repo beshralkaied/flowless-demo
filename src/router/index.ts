@@ -6,6 +6,7 @@ import Alerts from '../components/Alerts.vue'
 import FlowReadingsHistory from '../components/FlowReadingsHistory.vue'
 import LoginPage from '../components/LoginPage.vue'
 import LoginService from "../services/LoginService";
+import Dropdown from '../components/Dropdown.vue'
 const routes = [
     {
         path: '/',
@@ -44,6 +45,13 @@ const routes = [
         name: 'LoginPage',
         component: LoginPage,
 
+    },
+    
+    {
+        path: '/dropdown',
+        name: 'Dropdown',
+        component: Dropdown,
+    
     },
 ]
 
