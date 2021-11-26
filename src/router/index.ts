@@ -6,6 +6,7 @@ import Alerts from '../components/Alerts.vue'
 import FlowReadingsHistory from '../components/FlowReadingsHistory.vue'
 import LoginPage from '../components/LoginPage.vue'
 import LoginService from "../services/LoginService";
+import ShowAction from "../components/ShowAction.vue"
 const routes = [
     {
         path: '/',
@@ -43,6 +44,13 @@ const routes = [
         path: '/loginPage',
         name: 'LoginPage',
         component: LoginPage,
+
+    },
+
+    {
+        path: '/showAction',
+        name: 'ShowAction',
+        component: ShowAction,
 
     },
 ]
